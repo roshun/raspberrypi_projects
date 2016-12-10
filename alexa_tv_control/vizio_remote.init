@@ -1,0 +1,36 @@
+#! /bin/sh
+# /etc/init.d/vizio_remote.init
+
+# Author : Roshun Alur
+
+# Steps to enable this service:
+# sudo cp vizio_remote.init /etc/init.d 
+# sudo update-rc.d vizio_remote.init defaults
+
+# To start:
+# sudo /etc/init.d/vizio_remote.init start
+
+# To stop:
+# sudo /etc/init.d/vizio_remote.init stop
+
+# NOTE: UPDATE THIS PATH WITH THE PATH TO YOUR REPO
+script="/home/pi/projects/alexa_tv_control/tv_control.py"
+
+case "$1" in
+  start)
+    echo "Starting vizio_remote"
+    # run application you want to start
+    python $script &
+    ;;
+  stop)
+    echo "Stopping vizio_remote"
+    # kill application you want to stop
+    killall python
+    ;;
+  *)
+    echo "Usage: /etc/init.d/vizio_remote.init{start|stop}"
+    exit 1
+    ;;
+esac
+ 
+exit 0
