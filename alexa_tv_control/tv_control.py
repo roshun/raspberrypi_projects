@@ -1,5 +1,7 @@
 """ based on fauxmo_minimal.py by Fabricate.IO
     git repo: https://github.com/toddmedema/echo/
+
+    Author: Roshun Alur
 """
 
 import fauxmo
@@ -11,6 +13,9 @@ from debounce_handler import debounce_handler
 
 logging.basicConfig(level=logging.CRITICAL) # Only print CRITICAL messages
 
+# NOTE: Make sure you update this with your remote's name!!
+remote_name = "vizio"
+
 class device_handler(debounce_handler):
     """Handles requests from Alexa"""
     # For this project, we're using the trigger "the tv" and listening on port 52000
@@ -20,7 +25,7 @@ class device_handler(debounce_handler):
     def act(self, client_address, state):
         logging.debug("State", state, "from client @", client_address)
         # Open subprocess to send IR command using irsend
-        subprocess.Popen("irsend SEND_ONCE vizio KEY_POWER", shell=True) 
+        subprocess.Popen("irsend SEND_ONCE %s KEY_POWER" % remote_name, shell=True) 
         return True
 
 if __name__ == "__main__":
