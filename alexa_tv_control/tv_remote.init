@@ -14,7 +14,7 @@
 # sudo /etc/init.d/tv_remote.init stop
 
 # NOTE: UPDATE THIS PATH WITH THE PATH TO YOUR REPO
-script="/home/pi/projects/alexa_tv_control/tv_control.py"
+script="/home/pi/raspberrypi_projects/alexa_tv_control/tv_control.py"
 
 case "$1" in
   start)
