@@ -74,9 +74,6 @@ def on_intent(intent_request, session):
         elif "value" in intent_request["intent"]["slots"]["button"]:
             intent_type = "button"
             intent_value = intent_request["intent"]["slots"][intent_type]["value"]
-        elif "value" in intent_request["intent"]["slots"]["direction"]:
-            intent_type = "direction"
-            intent_value = intent_request["intent"]["slots"][intent_type]["value"]
         elif "value" in intent_request["intent"]["slots"]["search"]:
             intent_type = "search"
             intent_value = intent_request["intent"]["slots"][intent_type]["value"]
@@ -204,3 +201,4 @@ def build_response(session_attributes, speechlet_response):
         "sessionAttributes": session_attributes,
         "response": speechlet_response
     }
+
