@@ -38,7 +38,7 @@ def mqttSetup(MQTTClient):
     certificatePath = "RaspberryPi.cert.pem"
 
     # MQTT Parameters
-    host = "a3o5xp6f0hhlk6.iot.us-east-1.amazonaws.com" 
+    host = "a2f1bum09vr1fe.iot.us-east-1.amazonaws.com" 
     rootCAPath = "root-CA.crt"
     privateKeyPath = "RaspberryPi.private.key"
     certificatePath = "RaspberryPi.cert.pem"
@@ -201,4 +201,6 @@ def build_response(session_attributes, speechlet_response):
         "sessionAttributes": session_attributes,
         "response": speechlet_response
     }
+
+
 
