@@ -86,10 +86,9 @@ def callback(client, userdata, message):
                              "\t" + message.topic + "\t" + message.payload + "\n")
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args():
     # Usage
-    usage = """Usage:
-
+    usage = """
     Use certificate based mutual authentication:
     python basicPubSub.py -e <endpoint> -r <rootCAFilePath> -c <certFilePath> -k <privateKeyFilePath>
 
@@ -116,7 +115,7 @@ def parse_args() -> argparse.Namespace:
     return args
 
 
-def configure_logging() -> None:
+def configure_logging():
     # Configure logging
     logger = logging.getLogger("AWSIoTPythonSDK.core")
     logger.setLevel(logging.DEBUG)
@@ -159,79 +158,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-#
-# # Help info
-# helpInfo = """-e, --endpoint
-#     Your AWS IoT custom endpoint
-# -r, --rootCA
-#     Root CA file path
-# -c, --cert
-#     Certificate file path
-# -k, --key
-#     Private key file path
-# -w, --websocket
-#     Use MQTT over WebSocket
-# -h, --help
-#     Help information
-#
-#
-# """
-#
-# # Read in command-line parameters
-# useWebsocket = False
-# host = ""
-# rootCAPath = ""
-# certificatePath = ""
-# privateKeyPath = ""
-# try:
-#     opts, args = getopt.getopt(sys.argv[1:], "hwe:k:c:r:", ["help", "endpoint=", "key=","cert=","rootCA=", "websocket"])
-#     if len(opts) == 0:
-#         raise getopt.GetoptError("No input parameters!")
-#     for opt, arg in opts:
-#         if opt in ("-h", "--help"):
-#             print(helpInfo)
-#             exit(0)
-#         if opt in ("-e", "--endpoint"):
-#             host = arg
-#         if opt in ("-r", "--rootCA"):
-#             rootCAPath = arg
-#         if opt in ("-c", "--cert"):
-#             certificatePath = arg
-#         if opt in ("-k", "--key"):
-#             privateKeyPath = arg
-#         if opt in ("-w", "--websocket"):
-#             useWebsocket = True
-# except getopt.GetoptError:
-#     print(usageInfo)
-#     exit(1)
-#
-# # Missing configuration notification
-# missingConfiguration = False
-# if not host:
-#     print("Missing '-e' or '--endpoint'")
-#     missingConfiguration = True
-# if not rootCAPath:
-#     print("Missing '-r' or '--rootCA'")
-#     missingConfiguration = True
-# if not useWebsocket:
-#     if not certificatePath:
-#         print("Missing '-c' or '--cert'")
-#         missingConfiguration = True
-#     if not privateKeyPath:
-#         print("Missing '-k' or '--key'")
-#         missingConfiguration = True
-# if missingConfiguration:
-#     exit(2)
-#
-#
-# # Let's see what variables are used at this point in the code
-# print('useWebsocket: {}'.format(useWebsocket))
-# print('host: {}'.format(host))
-# print('rootCAPath: {}'.format(rootCAPath))
-# print('certificatePath: {}'.format(certificatePath))
-# print('privateKeyPath: {}'.format(privateKeyPath))
-# print('myAWSIoTMQTTClient: {}'.format(myAWSIoTMQTTClient))
-#
-# ...aaaaand exit
-# sys.exit(0)
