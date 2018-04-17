@@ -1,4 +1,5 @@
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
+import os
 
 myAWSIoTMQTTClient = AWSIoTMQTTClient("Vizio TV Remote")
 
@@ -8,7 +9,7 @@ class Intent:
         self.intent_type = intent_type
         self.intent_value = intent_value
         self.volume_amount = volume_amount
-        self.card_title, self.speech_output, self.pi_command = build_response(self)
+        self.card_title, self.speech_output, self.pi_command = self.build_response()
         self.should_end_session = True
 
     def build_response(self):
@@ -16,29 +17,29 @@ class Intent:
         speech_output = ''
         pi_command = ''
         if self.intent_type == 'button':
-            card_title = f'Vizio TV Remote press {self.intent_value}'
-            speech_output = f'Pressing {self.intent_value} on your Vizio TV'
-            pi_command = f'{self.intent_type} {self.intent_value}'
+            card_title = 'Vizio TV Remote press {}'.format(self.intent_value)
+            speech_output = 'Pressing {} on your Vizio TV'.format(self.intent_value)
+            pi_command = '{} {}'.format(self.intent_type, self.intent_value)
         elif self.intent_type == 'power_state':
-            card_title =f'Vizio TV Remote turn {self.intent_value}'
-            speech_output = f'Turning {self.intent_value} your Vizio TV'
-            pi_command = f'{self.intent_type} {self.intent_value}'
+            card_title = 'Vizio TV Remote turn {}'.format(self.intent_value)
+            speech_output = 'Turning {} your Vizio TV'.format(self.intent_value)
+            pi_command = '{} {}'.format(self.intent_type, self.intent_value)
         elif self.intent_type == 'volume_direction':
-            card_title = f'Vizio TV Remote turning volume {self.intent_value} by {self.volume_amount}'
-            speech_output = f'Turning the volume {self.intent_value} by {self.volume_amount} on your Vizio TV'
-            pi_command = f'volume {self.intent_value} {self.volume_amount}'
+            card_title = 'Vizio TV Remote turning volume {} by {}'.format(self.intent_value, self.volume_amount)
+            speech_output = 'Turning the volume {} by {} on your Vizio TV'.format(self.intent_value, self.volume_amount)
+            pi_command = 'volume {} {}'.format(self.intent_value, self.volume_amount)
         elif self.intent_type == 'search':
-            card_title = f'Vizio TV Remote search for {self.intent_value}'
-            speech_output = f'Searching for {self.intent_value} on your Vizio TV'
-            pi_command = f'{self.intent_type} {self.intent_value}'
+            card_title = 'Vizio TV Remote search for {}'.format(self.intent_value)
+            speech_output = 'Searching for {} on your Vizio TV'.format(self.intent_value)
+            pi_command = '{} {}'.format(self.intent_type, self.intent_value)
         elif self.intent_type == "video_service":
-            card_title = f'Vizio TV Remote opening video service {self.intent_value}'
-            speech_output = f'Opening the {self.intent_value} app on your Vizio TV'
-            pi_command = f'{self.intent_type} {self.intent_value}'
+            card_title = 'Vizio TV Remote opening video service {}'.format(self.intent_value)
+            speech_output = 'Opening the {} app on your Vizio TV'.format(self.intent_value)
+            pi_command = '{} {}'.format(self.intent_type, self.intent_value)
         elif self.intent_type == 'clear':
             card_title = "Vizio TV remote: clearing the search bar"
             speech_output = "Clearing the search bar on your Vizio TV"
-            pi_command = f'{self.intent_type}'
+            pi_command = '{}'.format(self.intent_type)
         else:
             get_error_response()
         return card_title, speech_output, pi_command
@@ -65,9 +66,9 @@ def lambda_handler(event, context):
 def mqtt_setup(client):
     # MQTT Parameters
     host = "a2f1bum09vr1fe.iot.us-east-1.amazonaws.com" 
-    root_ca_path = "root-CA.crt"
-    private_key_path = "RaspberryPi.private.key"
-    certificate_path = "RaspberryPi.cert.pem"
+    root_ca_path = os.path.join('certificates', 'root-CA.crt')
+    private_key_path = os.path.join('certificates', 'RaspberryPi.private.key')
+    certificate_path = os.path.join('certificates', 'RaspberryPi.cert.pem')
     
     client.configureEndpoint(host, 8883)
     client.configureCredentials(root_ca_path, private_key_path, certificate_path)
@@ -162,7 +163,7 @@ def callback(client, userdata, message):
     return
 
 
-def publish_to_pi(string: str):
+def publish_to_pi(string):
     myAWSIoTMQTTClient.connect()
     myAWSIoTMQTTClient.publish("$aws/things/RaspberryPi/vizioTVRemote", string, 1)
     myAWSIoTMQTTClient.subscribe("$aws/things/RaspberryPi/vizioTvRemote", 1, callback)
